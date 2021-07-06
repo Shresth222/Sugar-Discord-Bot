@@ -1115,3 +1115,7 @@ class Ludo(commands.Cog):
                     line += miniLudo_board[i+j*7]
                 line+="\n"
         return line
+
+def setup(client):
+    client.add_cog(Ludo(client))
+
