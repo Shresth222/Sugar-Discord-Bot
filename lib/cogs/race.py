@@ -28,7 +28,7 @@ class Race(commands.Cog):
     #code for race game
     #starting the race game, i.e., '~race'
     @commands.command()
-    async def race(ctx, p2:discord.Member):
+    async def race(self, ctx, p2:discord.Member):
         #calling all the global variable
         global race_player1
         global race_player2
@@ -67,7 +67,7 @@ class Race(commands.Cog):
 
     #for driving the car on alternate moves by the players
     @commands.command()
-    async def drive(ctx):
+    async def drive(self, ctx):
         #calling all the global variable
         global race_player1
         global race_player2
@@ -131,7 +131,7 @@ class Race(commands.Cog):
 
     #resetting the game
     @commands.command()
-    async def quit_race(ctx):
+    async def quit_race(self, ctx):
         global race_player1
         global race_player2
         global race_board1

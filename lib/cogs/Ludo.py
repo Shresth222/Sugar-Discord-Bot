@@ -24,6 +24,7 @@ miniLudo_red1=-1
 miniLudo_red2=-1
 miniLudo_turn=""
 miniLudo_winner=[]
+miniLudo_fakeplayers=0
 miniLudo_roll_check = False
 miniLudo_gameover=True
 
@@ -39,7 +40,7 @@ class Ludo(commands.Cog):
     
     #code for miniludo game
     #starting the game, i.e, '~miniLudo'
-    @commands.command()
+    @commands.command(aliases=['Ludo', 'ludo', 'mini_ludo', 'Miniludo', 'miniludo'])
     async def miniLudo(self, ctx, players: Greedy[discord.Member] ):
         global miniLudo_player1
         global miniLudo_player2
@@ -63,6 +64,7 @@ class Ludo(commands.Cog):
         global miniLudo_gameover
         global miniLudo_winner
         global miniLudo_roll_check
+        global miniLudo_fakeplayers
         if 1<=len(players)<4:
             if miniLudo_gameover :
                 miniLudo_green1=-1
@@ -77,20 +79,26 @@ class Ludo(commands.Cog):
                 miniLudo_roll_check = False
                 miniLudo_gameover=False
                 if len(players)==1:
-                    miniLudo_winner=[1,2]
                     miniLudo_player1=ctx.author
-                    miniLudo_player3=players[1]
+                    miniLudo_player2="fake1"
+                    miniLudo_player3=players[0]
+                    miniLudo_player4="fake2"
+                    miniLudo_winner=[miniLudo_player2,miniLudo_player4]
+                    miniLudo_fakeplayers=2
                 elif len(players)==2:
-                    miniLudo_winner=[1]
                     miniLudo_player1=ctx.author
                     miniLudo_player2=players[0]
                     miniLudo_player3=players[1]
+                    miniLudo_player4="fake1"
+                    miniLudo_winner=[miniLudo_player4]
+                    miniLudo_fakeplayers=1
                 else:
                     miniLudo_winner=[]
                     miniLudo_player1=ctx.author
                     miniLudo_player2=players[0]
                     miniLudo_player3=players[1]
                     miniLudo_player4=players[2]
+                    miniLudo_fakeplayers=0
                 
                 embed=discord.Embed(title="Mini-Ludo",description="Luck with scratching head.",colour=discord.Color.random(seed=None))
                 embed.add_field(name="Rules to play :",value="Major rules are same as ludo but few changes. Each player has two ludo pieces. One will get an extra roll of dice onlyif he rolls 6. He won't be qiven second roll for making one of his piece reach its dectination nor for cutting other's piece. You can coincide both piece on a single spot but remember if some one came to the spot he both of your pieces has to start again.",inline=False)
@@ -105,7 +113,12 @@ class Ludo(commands.Cog):
                         line += " "+miniLudo_board[i]
                 await ctx.send(line)
                 miniLudo_turn=miniLudo_player1
-                await ctx.send(f"{miniLudo_player1.mention} is :red_circle: (red)\n{miniLudo_player2.mention} is :blue_circle: (blue)\n{miniLudo_player3.mention} is :yellow_circle: (yellow)\n{miniLudo_player4.mention} is :green_circle: (green)") 
+                if miniLudo_fakeplayers==0:
+                    await ctx.send(f"{miniLudo_player1.mention} is :red_circle: (red)\n{miniLudo_player2.mention} is :blue_circle: (blue)\n{miniLudo_player3.mention} is :yellow_circle: (yellow)\n{miniLudo_player4.mention} is :green_circle: (green)") 
+                elif miniLudo_fakeplayers==1:
+                    await ctx.send(f"{miniLudo_player1.mention} is :red_circle: (red)\n{miniLudo_player2.mention} is :blue_circle: (blue)\n{miniLudo_player3.mention} is :yellow_circle: (yellow)")
+                else:
+                    await ctx.send(f"{miniLudo_player1.mention} is :red_circle: (red)\n{miniLudo_player3.mention} is :yellow_circle: (yellow)")  
                 await ctx.send("Turns are respective to mentioned names above")   
             else:               #if game is not finished the gameover will be false
                 await ctx.send("A game is already in progress! Finish it before starting a new one.")
@@ -125,61 +138,56 @@ class Ludo(commands.Cog):
                     miniLudo_roll_check=True
                     miniLudo_dice=random.choice([1,2,3,4,5,6])
                     await ctx.send("You have rolled {}".format(miniLudo_dice))
+                    if miniLudo_turn==miniLudo_player1:
+                        if (miniLudo_red1==26 and miniLudo_red2+miniLudo_dice>26) or (miniLudo_red2==26 and miniLudo_red1+miniLudo_dice>26):
+                            miniLudo_roll_check=False 
+                            await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                        elif miniLudo_red1==-1 and miniLudo_red2==-1 and miniLudo_dice!=6:
+                            await ctx.send("None of your pieces are out. Try on next turn.")
+                            miniLudo_roll_check=False
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                    elif miniLudo_turn==miniLudo_player2:
+                        if (miniLudo_blue1==26 and miniLudo_blue2+miniLudo_dice>26) or (miniLudo_blue2==26 and miniLudo_blue1+miniLudo_dice>26):
+                            miniLudo_roll_check=False 
+                            await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                        elif miniLudo_blue1==-1 and miniLudo_blue2==-1 and miniLudo_dice!=6:
+                            await ctx.send("None of your pieces are out. Try on next turn.")
+                            miniLudo_roll_check=False
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                    elif miniLudo_turn==miniLudo_player3:
+                        if (miniLudo_yellow1==26 and miniLudo_yellow2+miniLudo_dice>26) or (miniLudo_yellow2==26 and miniLudo_yellow1+miniLudo_dice>26):
+                            miniLudo_roll_check=False 
+                            await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                        elif miniLudo_yellow1==-1 and miniLudo_yellow2==-1 and miniLudo_dice!=6:
+                            await ctx.send("None of your pieces are out. Try on next turn.")
+                            miniLudo_roll_check=False
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                    else:
+                        if (miniLudo_green1==26 and miniLudo_green2+miniLudo_dice>26) or (miniLudo_green2==26 and miniLudo_green1+miniLudo_dice>26):
+                            miniLudo_roll_check=False 
+                            await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                        elif miniLudo_green1==-1 and miniLudo_green2==-1 and miniLudo_dice!=6:
+                            await ctx.send("None of your pieces are out. Try on next turn.")
+                            miniLudo_roll_check=False
+                            t=self.miniLudo_next_player()
+                            await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                 else:
                    await ctx.send("You have rolled already")
             else: 
                 await ctx.send("It is not your turn. Please wait patiently")
         else:                                               #the game has ended
             await ctx.send("Please start a game using the ~miniLudo command before using this command.")
-
-    def miniLudo_next_player():
-        global miniLudo_winner
-        global miniLudo_turn
-        global miniLudo_player1
-        global miniLudo_player2
-        global miniLudo_player3
-        global miniLudo_player4
-        if miniLudo_turn==miniLudo_player1:
-            if not(miniLudo_player2 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player2
-                return miniLudo_player2
-            elif not(miniLudo_player3 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player3
-                return miniLudo_player3
-            else:
-                miniLudo_turn=miniLudo_player4
-                return miniLudo_player4
-        elif miniLudo_turn==miniLudo_player2:
-            if not(miniLudo_player3 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player3
-                return miniLudo_player3
-            elif not(miniLudo_player4 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player4
-                return miniLudo_player4
-            else:
-                miniLudo_turn=miniLudo_player1
-                return miniLudo_player1
-        elif miniLudo_turn==miniLudo_player3:
-            if not(miniLudo_player4 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player4
-                return miniLudo_player4
-            elif not(miniLudo_player1 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player1
-                return miniLudo_player1
-            else:
-                miniLudo_turn=miniLudo_player2
-                return miniLudo_player2
-        else:
-            if not(miniLudo_player1 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player1
-                return miniLudo_player1
-            elif not(miniLudo_player2 in miniLudo_winner):
-                miniLudo_turn=miniLudo_player2
-                return miniLudo_player2
-            else:
-                miniLudo_turn=miniLudo_player3
-                return miniLudo_player3
-
 
     @commands.command()
     async def move(self, ctx, a:int):
@@ -222,16 +230,6 @@ class Ludo(commands.Cog):
                         if mover==1:
                             if miniLudo_red1==26 and miniLudo_red2+miniLudo_dice<27:
                                 await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_red1==26 and miniLudo_red2+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_red1==-1 and miniLudo_red2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                             elif miniLudo_red1==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_red1==-1 and miniLudo_dice==6:
@@ -292,17 +290,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(1))
                                 if  miniLudo_red1 ==26 and miniLudo_red2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":red_circle:(Red) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":red_circle:(red) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":red_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -321,16 +316,6 @@ class Ludo(commands.Cog):
                         elif mover==2:
                             if miniLudo_blue1==26 and miniLudo_blue2+miniLudo_dice<27:
                                 await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_blue1==26 and miniLudo_blue2+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_blue1==-1 and miniLudo_blue2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                             elif miniLudo_blue1==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_blue1==-1 and miniLudo_dice==6:
@@ -391,17 +376,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(2))
                                 if  miniLudo_blue1 ==26 and miniLudo_blue2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":blue_circle:(blue) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":blue_circle:(blue) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":blue_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -419,17 +401,7 @@ class Ludo(commands.Cog):
                                 await ctx.send("This piece cannot move therefore move the other piece.")
                         elif mover==3:
                             if miniLudo_yellow1==26 and miniLudo_yellow2+miniLudo_dice<27:
-                                await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_yellow1==26 and miniLudo_yellow2+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_yellow1==-1 and miniLudo_yellow2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                                await ctx.send("This piece has already reached its destination, please move the otherone")                            
                             elif miniLudo_yellow1==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_yellow1==-1 and miniLudo_dice==6:
@@ -490,17 +462,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(3))
                                 if  miniLudo_yellow1 ==26 and miniLudo_yellow2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":yellow_circle:(yellow) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":yellow_circle:(yellow) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":yellow_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -518,17 +487,7 @@ class Ludo(commands.Cog):
                                 await ctx.send("This piece cannot move therefore move the other piece.")
                         else :
                             if miniLudo_green1==26 and miniLudo_green2+miniLudo_dice<27:
-                                await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_green1==26 and miniLudo_green2+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_green1==-1 and miniLudo_green2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
+                                await ctx.send("This piece has already reached its destination, please move the otherone")                            
                             elif miniLudo_green1==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_green1==-1 and miniLudo_dice==6:
@@ -589,17 +548,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(4))
                                 if  miniLudo_green1 ==26 and miniLudo_green2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":green_circle:(green) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":green_circle:(green) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":green_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -619,16 +575,6 @@ class Ludo(commands.Cog):
                         if mover==1:
                             if miniLudo_red2==26 and miniLudo_red1+miniLudo_dice<27:
                                 await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_red2==26 and miniLudo_red1+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_red1==-1 and miniLudo_red2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                             elif miniLudo_red2==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_red2==-1 and miniLudo_dice==6:
@@ -689,17 +635,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(1))
                                 if  miniLudo_red1 ==26 and miniLudo_red2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":red_circle:(red) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":red_circle:(red) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":red_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -718,16 +661,6 @@ class Ludo(commands.Cog):
                         elif mover==2:
                             if miniLudo_blue2==26 and miniLudo_blue1+miniLudo_dice<27:
                                 await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_blue2==26 and miniLudo_blue1+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_blue1==-1 and miniLudo_blue2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                             elif miniLudo_blue2==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_blue2==-1 and miniLudo_dice==6:
@@ -788,17 +721,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(2))
                                 if  miniLudo_blue1 ==26 and miniLudo_blue2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":blue_circle:(blue) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":blue_circle:(blue) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":blue_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -817,16 +747,6 @@ class Ludo(commands.Cog):
                         elif mover==3:
                             if miniLudo_yellow2==26 and miniLudo_yellow1+miniLudo_dice<27:
                                 await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_yellow2==26 and miniLudo_yellow1+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_yellow1==-1 and miniLudo_yellow2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                             elif miniLudo_yellow2==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_yellow2==-1 and miniLudo_dice==6:
@@ -887,17 +807,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(3))
                                 if  miniLudo_yellow1 ==26 and miniLudo_yellow2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":yellow_circle:(yellow) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":yellow_circle:(yellow) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":yellow_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -916,16 +833,6 @@ class Ludo(commands.Cog):
                         else :
                             if miniLudo_green2==26 and miniLudo_green1+miniLudo_dice<27:
                                 await ctx.send("This piece has already reached its destination, please move the otherone")
-                            elif miniLudo_green2==26 and miniLudo_green1+miniLudo_dice>26:
-                                miniLudo_roll_check=False 
-                                await ctx.send("This piece has already reached its destination and you cannot move the other piece so wait for the next roll")
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
-                            elif miniLudo_green1==-1 and miniLudo_green2==-1 and miniLudo_dice!=6:
-                                await ctx.send("None of your pieces are out. Try on next turn.")
-                                miniLudo_roll_check=False
-                                t=self.miniLudo_next_player()
-                                await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                             elif miniLudo_green2==-1 and miniLudo_dice!=6:
                                 await ctx.send("This piece is not out. Please move the other piece.")
                             elif miniLudo_green2==-1 and miniLudo_dice==6:
@@ -986,17 +893,14 @@ class Ludo(commands.Cog):
                                 await ctx.send(self.miniLudo_board_print(4))
                                 if  miniLudo_green1 ==26 and miniLudo_green2 ==26:
                                     if len(miniLudo_winner)==2:
-                                        await ctx.send(":green_circle:(green) you are 3")
+                                        await ctx.send("The match is over")
                                         miniLudo_winner.append(miniLudo_player1)
                                         miniLudo_gameover=True
                                         await ctx.send("Thus, the final leaderboard is:")
-                                        for i in range(1,4):
-                                            await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is {}".format(i))
-                                        t=self.miniLudo_next_player()
-                                        await ctx.send("<@" + str(miniLudo_winner[i-1])+ "> is 4")
+                                        await ctx.send(self.miniLudo_leaderboard())
                                     else :
                                         miniLudo_winner.append(miniLudo_player1)
-                                        await ctx.send(":green_circle:(green) you are {}".format(len(miniLudo_winner)))
+                                        await ctx.send(":yellow_circle:(red) you are {}".format(len(miniLudo_winner)-miniLudo_fakeplayers))
                                         t=self.miniLudo_next_player()
                                         await ctx.send("Now its <@"+str(t.id)+"> turn to roll the dice")
                                 else:
@@ -1022,7 +926,7 @@ class Ludo(commands.Cog):
             await ctx.send("Please start a new game using the ~miniLudo command.")
 
 
-    @commands.command()
+    @commands.command(aliases=['quit_Ludo','quit_ludo','quitludo','quitLudo','quitMiniLudo','quitminiLudo','quitminiludo'])
     async def quit_miniLudo(self, ctx):
         global miniLudo_player1
         global miniLudo_player2
@@ -1047,7 +951,7 @@ class Ludo(commands.Cog):
         global miniLudo_roll_check
         global miniLudo_dice
         global miniLudo_winner
-        if miniLudo_winner:
+        if miniLudo_gameover:
             await ctx.send("The game is not being played. To play enter the command `~miniLudo`")
         else:
             miniLudo_player1=""
@@ -1075,13 +979,11 @@ class Ludo(commands.Cog):
             miniLudo_gameover=True
             await ctx.send("The game has ended. To play again enter the commmand `~miniLudo`")
 
-
     @miniLudo.error
     async def miniLudo_error(self, ctx, error):
         print(error)
         if isinstance(error, commands.BadArgument):
             await ctx.send("Please make sure to mention/ping players (ie. <@688534433879556134>).")
-
 
     @move.error
     async def move_error(self, ctx, error):
@@ -1115,6 +1017,69 @@ class Ludo(commands.Cog):
                     line += miniLudo_board[i+j*7]
                 line+="\n"
         return line
+    def miniLudo_next_player(self):
+        global miniLudo_winner
+        global miniLudo_turn
+        global miniLudo_player1
+        global miniLudo_player2
+        global miniLudo_player3
+        global miniLudo_player4
+        if miniLudo_turn==miniLudo_player1:
+            if not(miniLudo_player2 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player2
+                return miniLudo_player2
+            elif not(miniLudo_player3 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player3
+                return miniLudo_player3
+            else:
+                miniLudo_turn=miniLudo_player4
+                return miniLudo_player4
+        elif miniLudo_turn==miniLudo_player2:
+            if not(miniLudo_player3 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player3
+                return miniLudo_player3
+            elif not(miniLudo_player4 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player4
+                return miniLudo_player4
+            else:
+                miniLudo_turn=miniLudo_player1
+                return miniLudo_player1
+        elif miniLudo_turn==miniLudo_player3:
+            if not(miniLudo_player4 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player4
+                return miniLudo_player4
+            elif not(miniLudo_player1 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player1
+                return miniLudo_player1
+            else:
+                miniLudo_turn=miniLudo_player2
+                return miniLudo_player2
+        else:
+            if not(miniLudo_player1 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player1
+                return miniLudo_player1
+            elif not(miniLudo_player2 in miniLudo_winner):
+                miniLudo_turn=miniLudo_player2
+                return miniLudo_player2
+            else:
+                miniLudo_turn=miniLudo_player3
+                return miniLudo_player3
+
+    def miniLudo_leaderboard(self):
+        global miniLudo_fakeplayers
+        global miniLudo_winner
+        line=""
+        if miniLudo_fakeplayers==0:
+            for i in range(1,5):
+                line+="<@" + str(miniLudo_winner[i-1])+ "> is {}\n".format(i)
+        elif miniLudo_fakeplayers==1:
+            for i in range(1,4):
+                line+="<@" + str(miniLudo_winner[i])+ "> is {}\n".format(i)
+        else:
+            for i in range(1,3):
+                line+="<@" + str(miniLudo_winner[i+1])+ "> is {}\n".format(i)
+        return line
+
 
 def setup(client):
     client.add_cog(Ludo(client))
