@@ -7,7 +7,7 @@ miniLudo_player1=""
 miniLudo_player2=""
 miniLudo_player3=""
 miniLudo_player4=""
-miniLudo_board=[":green_circle:",":green_square:",":white_large_square:",":white_large_square:",":white_large_square:",":yellow_square:",":yellow_circle:",":green_square:",":green_circle:",":white_large_square:",":yellow_square:",":radioactive:",":yellow_circle:",":yellow_square:",":white_large_square:",":radioactive:",":white_large_square:",":yellow_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":green_square:",":green_square:",":white_square_button:",":blue_square: ",":blue_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":red_square:",":white_large_square:",":radioactive:",":white_large_square:",":red_square:",":red_circle:",":radioactive:",":red_square:",":white_large_square:",":blue_circle:",":blue_square:",":red_circle:",":red_square:",":white_large_square:",":white_large_square:",":white_large_square:",":blue_square:",":blue_circle:"]
+miniLudo_board=[":green_circle:",":green_square:",":white_large_square:",":white_large_square:",":white_large_square:",":yellow_square:",":yellow_circle:",":green_square:",":green_circle:",":white_large_square:",":yellow_square:",":radioactive:",":yellow_circle:",":yellow_square:",":white_large_square:",":radioactive:",":white_large_square:",":yellow_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":green_square:",":green_square:",":white_square_button:",":blue_square:",":blue_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":red_square:",":white_large_square:",":radioactive:",":white_large_square:",":red_square:",":red_circle:",":radioactive:",":red_square:",":white_large_square:",":blue_circle:",":blue_square:",":red_circle:",":red_square:",":white_large_square:",":white_large_square:",":white_large_square:",":blue_square:",":blue_circle:"]
 miniLudo_dice=0
 miniLudo_path_green=[15,16,9,2,3,4,11,18,19,20,27,34,33,32,39,46,45,44,37,30,29,28,21,22,23,24]
 miniLudo_path_yellow=[11,18,19,20,27,34,33,32,39,46,45,44,37,30,29,28,21,14,15,16,9,2,3,10,17,24]
@@ -67,6 +67,7 @@ class Ludo(commands.Cog):
         global miniLudo_fakeplayers
         if 1<=len(players)<4:
             if miniLudo_gameover :
+                miniLudo_board=[":green_circle:",":green_square:",":white_large_square:",":white_large_square:",":white_large_square:",":yellow_square:",":yellow_circle:",":green_square:",":green_circle:",":white_large_square:",":yellow_square:",":radioactive:",":yellow_circle:",":yellow_square:",":white_large_square:",":radioactive:",":white_large_square:",":yellow_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":green_square:",":green_square:",":white_square_button:",":blue_square:",":blue_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":red_square:",":white_large_square:",":radioactive:",":white_large_square:",":red_square:",":red_circle:",":radioactive:",":red_square:",":white_large_square:",":blue_circle:",":blue_square:",":red_circle:",":red_square:",":white_large_square:",":white_large_square:",":white_large_square:",":blue_square:",":blue_circle:"]
                 miniLudo_green1=-1
                 miniLudo_green2=-1
                 miniLudo_yellow1=-1
@@ -105,13 +106,7 @@ class Ludo(commands.Cog):
                 embed.add_field(name="How to Play :",value="Use command `~roll` alternatively to roll the dice and to move the desired piece use command `move (1 or 2 depending upon choice)`.")      
                 embed.set_thumbnail(url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCz6G7l37Q5Kx7fz0lUdFbSIY0qgPIi48VkQ&usqp=CAU')
                 await ctx.send(embed=embed)
-                line=""
-                for i in range(49):
-                    if i in [6,13,20,27,34,41,48]:
-                        line += " "+miniLudo_board[i] + "\n"
-                    else :
-                        line += " "+miniLudo_board[i]
-                await ctx.send(line)
+                await ctx.send(self.miniLudo_board_print(1))
                 miniLudo_turn=miniLudo_player1
                 if miniLudo_fakeplayers==0:
                     await ctx.send(f"{miniLudo_player1.mention} is :red_circle: (red)\n{miniLudo_player2.mention} is :blue_circle: (blue)\n{miniLudo_player3.mention} is :yellow_circle: (yellow)\n{miniLudo_player4.mention} is :green_circle: (green)") 
@@ -958,7 +953,7 @@ class Ludo(commands.Cog):
             miniLudo_player2=""
             miniLudo_player3=""
             miniLudo_player4=""
-            miniLudo_board=[":green_circle:",":green_square:",":white_large_square:",":white_large_square:",":white_large_square:",":yellow_square:",":yellow_circle:",":green_square:",":green_circle:",":white_large_square:",":yellow_square:",":radioactive:",":yellow_circle:",":yellow_square:",":white_large_square:",":radioactive:",":white_large_square:",":yellow_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":green_square:",":green_square:",":white_square_button:",":blue_square: ",":blue_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":red_square:",":white_large_square:",":radioactive:",":white_large_square:",":red_square:",":red_circle:",":radioactive:",":red_square:",":white_large_square:",":blue_circle:",":blue_square:",":red_circle:",":red_square:",":white_large_square:",":white_large_square:",":white_large_square:",":blue_square:",":blue_circle:"]
+            miniLudo_board=[":green_circle:",":green_square:",":white_large_square:",":white_large_square:",":white_large_square:",":yellow_square:",":yellow_circle:",":green_square:",":green_circle:",":white_large_square:",":yellow_square:",":radioactive:",":yellow_circle:",":yellow_square:",":white_large_square:",":radioactive:",":white_large_square:",":yellow_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":green_square:",":green_square:",":white_square_button:",":blue_square:",":blue_square:",":white_large_square:",":white_large_square:",":white_large_square:",":white_large_square:",":red_square:",":white_large_square:",":radioactive:",":white_large_square:",":red_square:",":red_circle:",":radioactive:",":red_square:",":white_large_square:",":blue_circle:",":blue_square:",":red_circle:",":red_square:",":white_large_square:",":white_large_square:",":white_large_square:",":blue_square:",":blue_circle:"]
             miniLudo_dice=0
             miniLudo_path_green=[15,16,9,2,3,4,11,18,19,20,27,34,33,32,39,46,45,44,37,30,29,28,21,22,23,24]
             miniLudo_path_yellow=[11,18,19,20,27,34,33,32,39,46,45,44,37,30,29,28,21,14,15,16,9,2,3,10,17,24]
@@ -992,7 +987,6 @@ class Ludo(commands.Cog):
         elif isinstance(error, commands.BadArgument):
             await ctx.send("Please make sure to enter an integer.")
 
-
     def miniLudo_board_print(self, a):
         global miniLudo_board
         line=""
@@ -1017,6 +1011,7 @@ class Ludo(commands.Cog):
                     line += miniLudo_board[i+j*7]
                 line+="\n"
         return line
+
     def miniLudo_next_player(self):
         global miniLudo_winner
         global miniLudo_turn
