@@ -239,47 +239,61 @@ class Ludo(commands.Cog):
                                     miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":radioactive:"
                                 elif miniLudo_path_red[miniLudo_red1-1] in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_square:"
+                                elif miniLudo_red1==miniLudo_red2:
+                                    miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_circle:"
                                 else:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":white_large_square:"
                                 miniLudo_red1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":radioactive:" or (miniLudo_red1-1) in miniLudo_stars:
+                                if miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":radioactive:" or (miniLudo_red1-1) in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":green_circle:":
                                         miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_circle:"
-                                        if miniLudo_green1==miniLudo_red1==miniLudo_green2:
+                                        if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[8]=":green_circle:"
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green1=-1
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_green1==miniLudo_red1:
+                                        elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_red[miniLudo_red1-1]:
+                                            miniLudo_board[8]=":green_circle:"
                                             miniLudo_green1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":yellow_circle:":
                                         miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_circle:"
-                                        if miniLudo_yellow1==miniLudo_red1==miniLudo_yellow2:
+                                        if miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_yellow1==miniLudo_red1:
+                                        elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_red[miniLudo_red1-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":blue_circle:":
                                         miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_circle:"
-                                        if miniLudo_blue1==miniLudo_red1==miniLudo_blue2:
+                                        if miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[48]=":blue_circle:"
+                                            miniLudo_board[40]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_blue1==miniLudo_red1:
+                                        elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_red[miniLudo_red1-1]:
+                                            miniLudo_board[40]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(1))
@@ -325,47 +339,61 @@ class Ludo(commands.Cog):
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":radioactive:"
                                 elif miniLudo_path_blue[miniLudo_red1-1] in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_square:"
+                                elif miniLudo_blue1==miniLudo_blue2:
+                                    miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_circle:"
                                 else:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":white_large_square:"
                                 miniLudo_blue1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":radioactive:" or (miniLudo_red1-1) in miniLudo_stars:
+                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":radioactive:" or (miniLudo_blue1-1) in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":green_circle:":
                                         miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_circle:"
-                                        if miniLudo_green1==miniLudo_blue1==miniLudo_green2:
+                                        if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[8]=":green_circle:"
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green1=-1
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_green1==miniLudo_blue1:
+                                        elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_blue[miniLudo_blue1-1]:
+                                            miniLudo_board[8]=":green_circle:"
                                             miniLudo_green1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 1  back home.")
                                         else:
                                             miniLudo_green2=-1
+                                            miniLudo_board[0]=":green_circle:"
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":yellow_circle:":
                                         miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_circle:"
-                                        if miniLudo_yellow1==miniLudo_blue1==miniLudo_yellow2:
+                                        if miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[6]=":yellow_circle:"
+                                            miniLudo_board[12]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_yellow1==miniLudo_blue1:
+                                        elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_blue[miniLudo_blue1-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":red_circle:":
                                         miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_circle:"
-                                        if miniLudo_red1==miniLudo_blue1==miniLudo_red2:
+                                        if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[36]=":red_circle:"
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red1=-1
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_red1==miniLudo_blue1:
+                                        elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_blue[miniLudo_blue1-1]:
+                                            miniLudo_board[36]=":red_circle:"
                                             miniLudo_red1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(2))
@@ -411,47 +439,61 @@ class Ludo(commands.Cog):
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":radioactive:"
                                 elif miniLudo_path_yellow[miniLudo_yellow1-1] in [10,17]:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_square:"
+                                elif miniLudo_yellow1==miniLudo_yellow2:
+                                    miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_circle:"
                                 else:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":white_large_square:"
                                 miniLudo_yellow1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":radioactive:" or (miniLudo_yellow1-1) in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":red_circle:"
+                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":radioactive:" or (miniLudo_yellow1-1) in [17,10]:
+                                    miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":green_circle:":
                                         miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_circle:"
-                                        if miniLudo_green1==miniLudo_yellow1==miniLudo_green2:
+                                        if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[8]=":green_circle:"
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green1=-1
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_green1==miniLudo_yellow1:
+                                        elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_yellow[miniLudo_yellow1-1]:
+                                            miniLudo_board[8]=":green_circle:"
                                             miniLudo_green1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":red_circle:":
                                         miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_circle:"
-                                        if miniLudo_red1==miniLudo_yellow1==miniLudo_red2:
+                                        if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[36]=":red_circle:"
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red1=-1
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_red1==miniLudo_yellow1:
+                                        elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_yellow[miniLudo_yellow1-1]:
+                                            miniLudo_board[36]=":red_circle:"
                                             miniLudo_red1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":blue_circle:":
                                         miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_circle:"
-                                        if miniLudo_blue1==miniLudo_yellow1==miniLudo_blue2:
+                                        if miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[40]=":blue_circle:"
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_blue1==miniLudo_yellow1:
+                                        elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_yellow[miniLudo_yellow1-1]:
+                                            miniLudo_board[40]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(3))
@@ -492,52 +534,66 @@ class Ludo(commands.Cog):
                             elif miniLudo_green1+miniLudo_dice <=26:
                                 miniLudo_roll_check=False
                                 if miniLudo_green1==0:
-                                    miniLudo_board[15]=":green_square:"
+                                    miniLudo_board[8]=":green_square:"
                                 elif miniLudo_path_green[miniLudo_green1-1] in miniLudo_stars:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":radioactive:"
                                 elif miniLudo_path_green[miniLudo_green1-1] in [22,23]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_square:"
+                                elif miniLudo_green1==miniLudo_green2:
+                                    miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_circle:"
                                 else:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":white_large_square:"
                                 miniLudo_green1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":radioactive:" or (miniLudo_green1-1) in miniLudo_stars:
+                                if miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":radioactive:" or (miniLudo_green1-1) in [23,22]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":red_circle:":
                                         miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_circle:"
-                                        if miniLudo_red1==miniLudo_green1==miniLudo_red2:
+                                        if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[36]=":red_circle:"
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red1=-1
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_red1==miniLudo_green1:
+                                        elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_green[miniLudo_green1-1]:
+                                            miniLudo_board[36]=":red_circle:"
                                             miniLudo_red1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":yellow_circle:":
                                         miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_circle:"
-                                        if miniLudo_yellow1==miniLudo_green1==miniLudo_yellow2:
+                                        if miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_yellow1==miniLudo_green1:
+                                        elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_green[miniLudo_green1-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":blue_circle:":
                                         miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_circle:"
-                                        if miniLudo_blue1==miniLudo_green1==miniLudo_blue2:
+                                        if miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[40]=":blue_circle:"
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_blue1==miniLudo_green1:
+                                        elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_green[miniLudo_green1-1]:
+                                            miniLudo_board[40]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(4))
@@ -584,47 +640,61 @@ class Ludo(commands.Cog):
                                     miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":radioactive:"
                                 elif miniLudo_path_red[miniLudo_red2-1] in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_square:"
+                                elif miniLudo_red1==miniLudo_red2:
+                                    miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
                                 else:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":white_large_square:"
                                 miniLudo_red2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":radioactive:" or (miniLudo_red2-1) in miniLudo_stars:
+                                if miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":radioactive:" or (miniLudo_red2-1) in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":green_circle:":
                                         miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
-                                        if miniLudo_green1==miniLudo_red2==miniLudo_green2:
+                                        if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[8]=":green_circle:"
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green1=-1
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_green1==miniLudo_red2:
+                                        elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[8]=":green_circle:"
                                             miniLudo_green1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":yellow_circle:":
                                         miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
-                                        if miniLudo_yellow1==miniLudo_red2==miniLudo_yellow2:
+                                        if miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_yellow1==miniLudo_red2:
+                                        elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":blue_circle:":
                                         miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
-                                        if miniLudo_blue1==miniLudo_red2==miniLudo_blue2:
+                                        if miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[40]=":blue_circle:"
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_blue1==miniLudo_red2:
+                                        elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[40]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(1))
@@ -670,47 +740,61 @@ class Ludo(commands.Cog):
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":radioactive:"
                                 elif miniLudo_path_blue[miniLudo_blue2-1] in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_square:"
+                                elif miniLudo_blue1==miniLudo_blue2:
+                                    miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_circle:"
                                 else:
-                                    miniLudo_board[miniLudo_path_red[miniLudo_blue2-1]]=":white_large_square:"
+                                    miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":white_large_square:"
                                 miniLudo_blue2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":radioactive:" or (miniLudo_blue2-1) in miniLudo_stars:
+                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":radioactive:" or (miniLudo_blue2-1) in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":green_circle:":
                                         miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_circle:"
-                                        if miniLudo_green1==miniLudo_blue2==miniLudo_green2:
+                                        if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[8]=":green_circle:"
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green1=-1
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_green1==miniLudo_blue2:
+                                        elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[8]=":green_circle:"
                                             miniLudo_green1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":yellow_circle:":
                                         miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_circle:"
-                                        if miniLudo_yellow1==miniLudo_blue2==miniLudo_yellow2:
+                                        if miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_yellow1==miniLudo_blue2:
+                                        elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":red_circle:":
                                         miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_circle:"
-                                        if miniLudo_red1==miniLudo_blue2==miniLudo_red2:
+                                        if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[36]=":red_circle:"
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red1=-1
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_red1==miniLudo_blue2:
+                                        elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[36]=":red_circle:"
                                             miniLudo_red1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(2))
@@ -756,47 +840,61 @@ class Ludo(commands.Cog):
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":radioactive:"
                                 elif miniLudo_path_yellow[miniLudo_yellow2-1] in [17,10]:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_square:"
+                                elif miniLudo_yellow1==miniLudo_yellow2:
+                                    miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_circle:"
                                 else:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":white_large_square:"
                                 miniLudo_yellow2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":radioactive:" or (miniLudo_yellow2-1) in miniLudo_stars:
+                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":radioactive:" or (miniLudo_yellow2-1) in [17,10]:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":green_circle:":
                                         miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_circle:"
-                                        if miniLudo_green1==miniLudo_yellow2==miniLudo_green2:
+                                        if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[8]=":green_circle:"
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green1=-1
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_green1==miniLudo_yellow2:
+                                        elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[8]=":green_circle:"
                                             miniLudo_green1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[0]=":green_circle:"
                                             miniLudo_green2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player4.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":red_circle:":
                                         miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_circle:"
-                                        if miniLudo_red1==miniLudo_yellow1==miniLudo_red2:
+                                        if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[36]=":red_circle:"
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red1=-1
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_red1==miniLudo_yellow2:
+                                        elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[36]=":red_circle:"
                                             miniLudo_red1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":blue_circle:":
                                         miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_circle:"
-                                        if miniLudo_blue1==miniLudo_yellow2==miniLudo_blue2:
+                                        if miniLudo_path_blue[miniLudo_blue1]==miniLudo_path_yellow[miniLudo_yellow2]==miniLudo_path_blue[miniLudo_blue2]:
+                                            miniLudo_board[40]=":blue_circle:"
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_blue1==miniLudo_yellow2:
+                                        elif miniLudo_path_blue[miniLudo_blue1]==miniLudo_path_yellow[miniLudo_yellow2]:
+                                            miniLudo_board[40]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(3))
@@ -842,47 +940,61 @@ class Ludo(commands.Cog):
                                     miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":radioactive:"
                                 elif miniLudo_path_green[miniLudo_green2-1] in [22,23]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_square:"
+                                elif miniLudo_green1==miniLudo_green2:
+                                    miniLudo_board[miniLudo_path_green[miniLudo_green2]]=":green_circle:"
                                 else:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":white_large_square:"
                                 miniLudo_green2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":radioactive:" or (miniLudo_green2-1) in miniLudo_stars:
+                                if miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":radioactive:" or (miniLudo_green2-1) in [22,23]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_circle:"
                                     await ctx.send("your move:")
                                 else:
                                     if miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":red_circle:":
                                         miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_circle:"
-                                        if miniLudo_red1==miniLudo_green2==miniLudo_red2:
+                                        if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                            miniLudo_board[36]=":red_circle:"
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red1=-1
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_red1==miniLudo_green2:
+                                        elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[36]=":red_circle:"
                                             miniLudo_red1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[42]=":red_circle:"
                                             miniLudo_red2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player1.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":yellow_circle:":
                                         miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_circle:"
-                                        if miniLudo_yellow1==miniLudo_green2==miniLudo_yellow2:
+                                        if miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_yellow1==miniLudo_green2:
+                                        elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[12]=":yellow_circle:"
                                             miniLudo_yellow1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[6]=":yellow_circle:"
                                             miniLudo_yellow2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player3.id)+"> 's piece 2 back home.")
                                     elif miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":blue_circle:":
                                         miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_circle:"
-                                        if miniLudo_blue1==miniLudo_green2==miniLudo_blue2:
+                                        if miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                            miniLudo_board[40]=":blue_circle:"
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's both piece 1 and piece 2 back home.")
-                                        elif miniLudo_blue1==miniLudo_green2:
+                                        elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                            miniLudo_board[40]=":blue_circle:"
                                             miniLudo_blue1=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 1  back home.")
                                         else:
+                                            miniLudo_board[48]=":blue_circle:"
                                             miniLudo_blue2=-1
                                             await ctx.send("You have sent back <@"+str(miniLudo_player2.id)+"> 's piece 2 back home.")
                                 await ctx.send(self.miniLudo_board_print(4))
@@ -974,6 +1086,137 @@ class Ludo(commands.Cog):
             miniLudo_gameover=True
             await ctx.send("The game has ended. To play again enter the commmand `~miniLudo`")
 
+    @commands.command(aliases=['pieces','mypieces'])
+    async def my_pieces(self, ctx):
+        global miniLudo_player1
+        global miniLudo_player2
+        global miniLudo_player3
+        global miniLudo_player4
+        global miniLudo_board
+        global miniLudo_path_green
+        global miniLudo_path_yellow
+        global miniLudo_path_blue
+        global miniLudo_path_red
+        global miniLudo_stars
+        global miniLudo_green1
+        global miniLudo_green2
+        global miniLudo_yellow1
+        global miniLudo_yellow2
+        global miniLudo_blue1
+        global miniLudo_blue2
+        global miniLudo_red1
+        global miniLudo_red2
+        global miniLudo_gameover
+        if not(miniLudo_gameover):
+            if ctx.author==miniLudo_player1:
+                line=""
+                if miniLudo_red1==miniLudo_red2==-1 or miniLudo_red2!=miniLudo_red1 :
+                    for i in range(49):
+                        if i==miniLudo_path_red[miniLudo_red1-1] and miniLudo_red1!=-1:
+                            line+=":one:"
+                        elif miniLudo_red1==-1 and i==36:
+                            line+=":one:"
+                        elif i==miniLudo_path_red[miniLudo_red2-1] and miniLudo_red2!=-1:
+                            line+=":two:"
+                        elif miniLudo_red1==-1 and i==42:
+                            line+=":two:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n" 
+                else:
+                    await ctx.send("Both of your pieces are in same place")
+                    for i in range(49):
+                        if i==miniLudo_path_red[miniLudo_red1-1]:
+                            line+=":1234:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n"
+            elif ctx.author==miniLudo_player2:
+                line=""
+                if miniLudo_blue1==miniLudo_blue2==-1 or miniLudo_blue2!=miniLudo_blue1:
+                    for i in range(49):
+                        if i==miniLudo_path_blue[miniLudo_blue1-1] and miniLudo_blue1!=-1:
+                            line+=":one:"
+                        elif miniLudo_blue1==-1 and i==36:
+                            line+=":one:"
+                        elif i==miniLudo_path_blue[miniLudo_blue2-1] and miniLudo_blue2!=-1:
+                            line+=":two:"
+                        elif miniLudo_blue1==-1 and i==42:
+                            line+=":two:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n" 
+                else:
+                    ctx.send("Both of your pieces are in same place")
+                    for i in range(49):
+                        if i==miniLudo_path_blue[miniLudo_blue1-1]:
+                            line+=":1234:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n"
+            elif ctx.author==miniLudo_player3:
+                line=""
+                if miniLudo_yellow1==miniLudo_yellow2==-1 or miniLudo_yellow2!=miniLudo_yellow1:
+                    for i in range(49):
+                        if i==miniLudo_path_yellow[miniLudo_yellow1-1] and miniLudo_yellow1!=-1:
+                            line+=":one:"
+                        elif miniLudo_yellow1==-1 and i==36:
+                            line+=":one:"
+                        elif i==miniLudo_path_yellow[miniLudo_yellow2-1] and miniLudo_yellow2!=-1:
+                            line+=":two:"
+                        elif miniLudo_yellow1==-1 and i==42:
+                            line+=":two:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n" 
+                else:
+                    await ctx.send("Both of your pieces are in same place")
+                    for i in range(49):
+                        if i==miniLudo_path_yellow[miniLudo_yellow1-1]:
+                            line+=":1234:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n"
+            else:
+                line=""
+                if miniLudo_green1==miniLudo_green2==-1 or miniLudo_green2!=miniLudo_green1:
+                    for i in range(49):
+                        if i==miniLudo_path_green[miniLudo_green1-1] and miniLudo_green1!=-1:
+                            line+=":one:"
+                        elif miniLudo_green1==-1 and i==36:
+                            line+=":one:"
+                        elif i==miniLudo_path_green[miniLudo_green2-1] and miniLudo_green2!=-1:
+                            line+=":two:"
+                        elif miniLudo_green1==-1 and i==42:
+                            line+=":two:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n" 
+                else:
+                    await ctx.send("Both of your pieces are in same place")
+                    for i in range(49):
+                        if i==miniLudo_path_green[miniLudo_green1-1]:
+                            line+=":1234:"
+                        else:
+                            line+=miniLudo_board[i]
+                        if i in [6,13,20,27,34,41,48]:
+                            line +="\n"
+            await ctx.send(f"Here is your position on board {ctx.author.mention}")
+            await ctx.send(line)
+        else:
+            await ctx.send("Please start the game using `~ludo` to use this command")
+
+
+                
+
+
     @miniLudo.error
     async def miniLudo_error(self, ctx, error):
         print(error)
@@ -990,26 +1233,11 @@ class Ludo(commands.Cog):
     def miniLudo_board_print(self, a):
         global miniLudo_board
         line=""
-        if a==1:
-            for i in range(7):
-                for j in range(7):
-                    line += miniLudo_board[i*7 +j]
-                line+="\n"
-        elif a ==2:
-            for i in range(42,49):
-                for j in range(7):
-                    line += miniLudo_board[i-j*7]
-                line+="\n"
-        elif a==3:
-            for i in range(48,5,-7):
-                for j in range(7):
-                    line += miniLudo_board[i -j]
-                line+="\n"
-        else:
-            for i in range(6,-1,-1):
-                for j in range(7):
-                    line += miniLudo_board[i+j*7]
-                line+="\n"
+        for i in range(0,49):
+            if i in [6,13,20,27,34,41,48]:
+                line +=miniLudo_board[i]+"\n"
+            else:
+                line+=miniLudo_board[i]
         return line
 
     def miniLudo_next_player(self):

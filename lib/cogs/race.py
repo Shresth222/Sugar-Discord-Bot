@@ -101,28 +101,19 @@ class Race(commands.Cog):
                     else:
                         race_turn = race_player1
                         await ctx.send("Stop there!!Don't cross the finish line. Wait for next move")
+                    if race_sum_player1==race_sum_player2==13:
+                        await ctx.send("The race has tied")
+                        race_gameover=True
+                    elif race_sum_player2==13:
+                        await ctx.send(f'{race_player2.mention} has won the race')
+                        race_gameover=True
+                    elif race_sum_player1==13:
+                        await ctx.send(f'{race_player1.mention} has won the race')
+                        race_gameover=True
                 line=""
                 for i in range(0,14):    #prints the board
                     line+=race_decorator[i]+" "+race_board1[i]+" "+race_board2[i]+" "+race_decorator[i] +"\n"
                 await ctx.send(line)
-                if race_sum_player1==race_sum_player2==13:
-                    await ctx.send("The race has tied")
-                    race_player1=""
-                    race_player2=""
-                    race_board1=[]
-                    race_board2=[]
-                    race_decorator=[]
-                    race_gameover=True
-                    race_sum_player1=0
-                    race_sum_player2=0
-                    race_turn=""
-                    race_dice=[1,2,3,4]
-                elif race_sum_player2==13:
-                    await ctx.send(f'{race_player2.mention} has won the race')
-                    race_gameover=True
-                elif race_sum_player1==13:
-                    await ctx.send(f'{race_player1.mention} has won the race')
-                    race_gameover=True
             else:                                           #wrong person was trying to play
                 await ctx.send("Wait for your turn!")
         else:                                               #the game has ended
