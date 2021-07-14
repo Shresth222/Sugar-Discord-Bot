@@ -30,8 +30,8 @@ miniLudo_gameover=True
 
 class Ludo(commands.Cog):
 
-    def __init__(self,client):
-        self.client = client
+    def __init__(self,bot):
+        self.bot = bot
         
 
     @commands.Cog.listener()
@@ -103,7 +103,7 @@ class Ludo(commands.Cog):
                 
                 embed=discord.Embed(title="Mini-Ludo",description="Luck with scratching head.",colour=discord.Color.random(seed=None))
                 embed.add_field(name="Rules to play :",value="Major rules are same as ludo but few changes. Each player has two ludo pieces. One will get an extra roll of dice onlyif he rolls 6. He won't be qiven second roll for making one of his piece reach its dectination nor for cutting other's piece. You can coincide both piece on a single spot but remember if some one came to the spot he both of your pieces has to start again.",inline=False)
-                embed.add_field(name="How to Play :",value="Use command `~roll` alternatively to roll the dice and to move the desired piece use command `move (1 or 2 depending upon choice)`.")      
+                embed.add_field(name="How to Play :",value="Use command `~roll` alternatively to roll the dice and to move the desired piece use command `move (1 or 2 depending upon choice)`. If you forgot your pieces use command `~pieces`.")      
                 embed.set_thumbnail(url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCz6G7l37Q5Kx7fz0lUdFbSIY0qgPIi48VkQ&usqp=CAU')
                 await ctx.send(embed=embed)
                 await ctx.send(self.miniLudo_board_print(1))
@@ -236,7 +236,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_red1==0:
                                     miniLudo_board[36]=":red_square:"
                                 elif miniLudo_path_red[miniLudo_red1-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":radioactive:"
+                                    if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_red[miniLudo_red1-1] or miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_red[miniLudo_red1-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":green_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_red[miniLudo_red1-1] or miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_red[miniLudo_red1-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":yellow_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_red[miniLudo_red1-1] or miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_red[miniLudo_red1-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":blue_circle:"
+                                    elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":radioactive:"
                                 elif miniLudo_path_red[miniLudo_red1-1] in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_square:"
                                 elif miniLudo_red1==miniLudo_red2:
@@ -244,7 +253,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":white_large_square:"
                                 miniLudo_red1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":radioactive:" or (miniLudo_red1-1) in [31,38]:
+                                if miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]==":radioactive:" or miniLudo_path_red[miniLudo_red1-1] in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red1-1]]=":red_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -336,7 +345,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_blue1==0:
                                     miniLudo_board[40]=":blue_square:"
                                 elif miniLudo_path_blue[miniLudo_blue1-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":radioactive:"
+                                    if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_blue[miniLudo_blue1-1] or miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_blue[miniLudo_blue1-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_blue1-1]]=":green_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_blue[miniLudo_blue1-1] or miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_blue[miniLudo_blue1-1]:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":yellow_circle:"
+                                    elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_blue[miniLudo_blue1-1] or miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_blue[miniLudo_blue1-1]:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":red_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":radioactive:"
                                 elif miniLudo_path_blue[miniLudo_red1-1] in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_square:"
                                 elif miniLudo_blue1==miniLudo_blue2:
@@ -344,7 +362,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":white_large_square:"
                                 miniLudo_blue1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":radioactive:" or (miniLudo_blue1-1) in [25,26]:
+                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]==":radioactive:" or miniLudo_path_blue[miniLudo_blue1-1] in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue1-1]]=":blue_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -436,7 +454,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_yellow1==0:
                                     miniLudo_board[12]=":yellow_square:"
                                 elif miniLudo_path_yellow[miniLudo_yellow1-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":radioactive:"
+                                    if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_yellow[miniLudo_yellow1-1] or miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_yellow[miniLudo_yellow1-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":green_circle:"
+                                    elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_yellow[miniLudo_yellow1-1] or miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_yellow[miniLudo_yellow1-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":red_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_yellow[miniLudo_yellow1-1] or miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_yellow[miniLudo_yellow1-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":blue_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":radioactive:"
                                 elif miniLudo_path_yellow[miniLudo_yellow1-1] in [10,17]:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_square:"
                                 elif miniLudo_yellow1==miniLudo_yellow2:
@@ -444,7 +471,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":white_large_square:"
                                 miniLudo_yellow1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":radioactive:" or (miniLudo_yellow1-1) in [17,10]:
+                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]==":radioactive:" or miniLudo_path_yellow[miniLudo_yellow1-1] in [17,10]:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow1-1]]=":yellow_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -536,7 +563,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_green1==0:
                                     miniLudo_board[8]=":green_square:"
                                 elif miniLudo_path_green[miniLudo_green1-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":radioactive:"
+                                    if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_green[miniLudo_green1-1] or miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_green[miniLudo_green1-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":red_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_green[miniLudo_green1-1] or miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_green[miniLudo_green1-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":yellow_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_green[miniLudo_green1-1] or miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_green[miniLudo_green1-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":blue_circle:"
+                                    elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":radioactive:"
                                 elif miniLudo_path_green[miniLudo_green1-1] in [22,23]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_square:"
                                 elif miniLudo_green1==miniLudo_green2:
@@ -544,7 +580,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":white_large_square:"
                                 miniLudo_green1 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":radioactive:" or (miniLudo_green1-1) in [23,22]:
+                                if miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]==":radioactive:" or miniLudo_path_green[miniLudo_green1-1] in [23,22]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green1-1]]=":green_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -637,7 +673,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_red2==0:
                                     miniLudo_board[42]=":red_square:"
                                 elif miniLudo_path_red[miniLudo_red2-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":radioactive:"
+                                    if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_red[miniLudo_red2-1] or miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":green_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_red[miniLudo_red2-1] or miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":yellow_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_red[miniLudo_red2-1] or miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":blue_circle:"
+                                    elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_red[miniLudo_red2-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":radioactive:"
                                 elif miniLudo_path_red[miniLudo_red2-1] in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_square:"
                                 elif miniLudo_red1==miniLudo_red2:
@@ -645,7 +690,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":white_large_square:"
                                 miniLudo_red2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":radioactive:" or (miniLudo_red2-1) in [31,38]:
+                                if miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]==":radioactive:" or miniLudo_path_red[miniLudo_red2-1] in [31,38]:
                                     miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -737,7 +782,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_blue2==0:
                                     miniLudo_board[48]=":blue_square:"
                                 elif miniLudo_path_blue[miniLudo_blue2-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":radioactive:"
+                                    if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_blue[miniLudo_blue2-1] or miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":green_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_blue[miniLudo_blue2-1] or miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":yellow_circle:"
+                                    elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_blue[miniLudo_blue2-1] or miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                        miniLudo_board[miniLudo_path_red[miniLudo_red2-1]]=":red_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_blue[miniLudo_blue2-1]:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":radioactive:"
                                 elif miniLudo_path_blue[miniLudo_blue2-1] in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_square:"
                                 elif miniLudo_blue1==miniLudo_blue2:
@@ -745,7 +799,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":white_large_square:"
                                 miniLudo_blue2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":radioactive:" or (miniLudo_blue2-1) in [25,26]:
+                                if miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]==":radioactive:" or miniLudo_path_blue[miniLudo_blue2-1] in [25,26]:
                                     miniLudo_board[miniLudo_path_blue[miniLudo_blue2-1]]=":blue_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -837,7 +891,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_yellow2==0:
                                     miniLudo_board[6]=":yellow_square:"
                                 elif miniLudo_path_yellow[miniLudo_yellow2-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":radioactive:"
+                                    if miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_yellow[miniLudo_yellow2-1] or miniLudo_path_green[miniLudo_green2-1]==miniLudo_path_yellow[miniLudo_red2-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":green_circle:"
+                                    elif miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_yellow[miniLudo_yellow2-1] or miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":red_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_yellow[miniLudo_yellow2-1] or miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":blue_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_yellow[miniLudo_yellow2-1]:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":radioactive:"
                                 elif miniLudo_path_yellow[miniLudo_yellow2-1] in [17,10]:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_square:"
                                 elif miniLudo_yellow1==miniLudo_yellow2:
@@ -845,7 +908,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":white_large_square:"
                                 miniLudo_yellow2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":radioactive:" or (miniLudo_yellow2-1) in [17,10]:
+                                if miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]==":radioactive:" or miniLudo_path_yellow[miniLudo_yellow2-1] in [17,10]:
                                     miniLudo_board[miniLudo_path_yellow[miniLudo_yellow2-1]]=":yellow_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -937,7 +1000,16 @@ class Ludo(commands.Cog):
                                 if miniLudo_green2==0:
                                     miniLudo_board[0]=":green_square:"
                                 elif miniLudo_path_green[miniLudo_green2-1] in miniLudo_stars:
-                                    miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":radioactive:"
+                                    if miniLudo_path_red[miniLudo_red1-1]==miniLudo_path_green[miniLudo_green2-1] or miniLudo_path_red[miniLudo_red2-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":red_circle:"
+                                    elif miniLudo_path_yellow[miniLudo_yellow1-1]==miniLudo_path_green[miniLudo_green2-1] or miniLudo_path_yellow[miniLudo_yellow2-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":yellow_circle:"
+                                    elif miniLudo_path_blue[miniLudo_blue1-1]==miniLudo_path_green[miniLudo_green2-1] or miniLudo_path_blue[miniLudo_blue2-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":blue_circle:"
+                                    elif miniLudo_path_green[miniLudo_green1-1]==miniLudo_path_green[miniLudo_green2-1]:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_circle:"
+                                    else:
+                                        miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":radioactive:"
                                 elif miniLudo_path_green[miniLudo_green2-1] in [22,23]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_square:"
                                 elif miniLudo_green1==miniLudo_green2:
@@ -945,7 +1017,7 @@ class Ludo(commands.Cog):
                                 else:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":white_large_square:"
                                 miniLudo_green2 += miniLudo_dice
-                                if miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":radioactive:" or (miniLudo_green2-1) in [22,23]:
+                                if miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":white_large_square:" or miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]==":radioactive:" or miniLudo_path_green[miniLudo_green2-1] in [22,23]:
                                     miniLudo_board[miniLudo_path_green[miniLudo_green2-1]]=":green_circle:"
                                     await ctx.send("your move:")
                                 else:
@@ -1208,7 +1280,7 @@ class Ludo(commands.Cog):
                             line+=miniLudo_board[i]
                         if i in [6,13,20,27,34,41,48]:
                             line +="\n"
-            await ctx.send(f"Here is your position on board {ctx.author.mention}")
+            await ctx.send(f"Here is your position on board {ctx.author.mention} and pay attention or you will lose.")
             await ctx.send(line)
         else:
             await ctx.send("Please start the game using `~ludo` to use this command")
@@ -1304,6 +1376,6 @@ class Ludo(commands.Cog):
         return line
 
 
-def setup(client):
-    client.add_cog(Ludo(client))
+def setup(bot):
+    bot.add_cog(Ludo(bot))
 

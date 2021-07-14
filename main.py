@@ -1,5 +1,5 @@
 #importing the Bot class
-from lib.bot import client
+from lib.bot import bot
 
 #running the called fun
-client.run()
+bot.run()

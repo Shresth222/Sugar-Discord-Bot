@@ -17,8 +17,8 @@ race_dice=[1,2,3,4]
 
 class Race(commands.Cog):
 
-    def __init__(self,client):
-        self.client = client
+    def __init__(self,bot):
+        self.bot = bot
         
 
     @commands.Cog.listener()
@@ -155,5 +155,5 @@ class Race(commands.Cog):
         elif isinstance(error, commands.BadArgument):
             await ctx.send("Please make sure to mention/ping players (ie. <@688534433879556134>).")
 
-def setup(client):
-    client.add_cog(Race(client))
+def setup(bot):
+    bot.add_cog(Race(bot))

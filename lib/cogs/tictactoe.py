@@ -12,8 +12,8 @@ tictactoe_wining_condition=[[0,1,2],[3,4,5],[6,7,8],[0,4,8],[2,4,6],[0,3,6],[1,4
 
 class Ticktactoe(commands.Cog):
 
-    def __init__(self,client):
-        self.client = client
+    def __init__(self,bot):
+        self.bot = bot
         
 
     @commands.Cog.listener()
@@ -151,6 +151,6 @@ class Ticktactoe(commands.Cog):
 
 
 
-def setup(client):
-    client.add_cog(Ticktactoe(client))
+def setup(bot):
+    bot.add_cog(Ticktactoe(bot))
     

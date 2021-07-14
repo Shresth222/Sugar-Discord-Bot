@@ -39,7 +39,7 @@ class Bot(BotBase):
         print("Hello I am ready")
 
     
-client=Bot()
+bot=Bot()
 
 
 

@@ -6,9 +6,9 @@ from discord.ext import commands
 
 class Help(commands.Cog):
 
-    def __init__(self,client):
-        self.client = client
-        self.client.remove_command("help")
+    def __init__(self,bot):
+        self.bot = bot
+        self.bot.remove_command("help")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -30,7 +30,7 @@ class Help(commands.Cog):
                 embed.add_field(name='Ludo', value='`~miniLudo <@mention>`\n can be played between two to four players')
                 await ctx.send(embed=embed)
             else:
-                await ctx.send("That command does not exist.")
+                await ctx.send("That section does not exist.")
 
-def setup(client):
-    client.add_cog(Help(client))
+def setup(bot):
+    bot.add_cog(Help(bot))
