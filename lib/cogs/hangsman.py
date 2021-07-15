@@ -18,12 +18,9 @@ class GuessTheWord(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
         
-
     @commands.Cog.listener()
     async def on_ready(self):
         print("GuessTheWord cog is ready.")
-
-
 
     @commands.command(aliases=['wg','word_guesser'])
     async def wordGuesser(self, ctx):
@@ -49,17 +46,13 @@ class GuessTheWord(commands.Cog):
         else:
             await ctx.send("A game is already in progress! Finish it before starting a new one.")
 
-
-
     @commands.command(aliases=['g'])
     async def guess(self, ctx, letter:str):
-
         global wordGuesser_word
         global wordGuesser_gameover
         global wordGuesser_guessedLettters
         global wordGuesser_chances
         global wordGuesser_answer
-
         if not wordGuesser_gameover:
             if letter.lower() in ['a','e','i','o','u']:
                 await ctx.send('Guess consonants only. Vowels are already given.')
@@ -92,7 +85,31 @@ class GuessTheWord(commands.Cog):
                         embed.set_footer(text=f'No chances left.')
                         return await ctx.send(embed=embed)
         else:
-            await ctx.send("Please start the game using `~wordGusser` to use this command and play the game.")
+            await ctx.send("Please start the game using `~wordGusser` or `~wg` to use this command and play the game.")
+
+    @commands.command(aliases=['qwg','quitwordgusser','QuitWordGusser','quitwordGusser'])
+    async def quitWordGusser(self, ctx, letter:str):
+        global wordGuesser_word
+        global wordGuesser_gameover
+        global wordGuesser_guessedLettters
+        global wordGuesser_chances
+        global wordGuesser_answer
+        if wordGuesser_gameover:
+            await ctx.send("The game is not being played. To play enter the command `~wordGusser` or `~wg`")
+        else:
+            wordGuesser_word = ''
+            wordGuesser_guessedLettters = ['a','e','i','o','u']
+            wordGuesser_gameover = True
+            wordGuesser_chances=0
+            wordGuesser_answer=''
+            await ctx.send("The game has ended. To play again enter the commmand `~wordGusser` or `~wg`")
+
+    @guess.error
+    async def guess_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("Please enter a single consonant.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Please make sure it is an alphabet.")
 
     def chances(self):
         global wordGuesser_chances
@@ -134,13 +151,6 @@ class GuessTheWord(commands.Cog):
         global wordGuesser_word
         wordGuesser_word = random.choice(wordGuesser_list).lower()
     
-    @guess.error
-    async def guess_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Please enter a single consonant.")
-        elif isinstance(error, commands.BadArgument):
-            await ctx.send("Please make sure it is an alphabet.")
-
 
 def setup(bot):
     bot.add_cog(GuessTheWord(bot))
