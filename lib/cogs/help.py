@@ -19,7 +19,7 @@ class Help(commands.Cog):
         if args is None :
             embed=discord.Embed(title=":heart_exclamation: Bot's Commands :heart_exclamation: ",description="`You can know about each section by using '~help (section_name)'.`", colour=discord.Color.random(seed=None))
             embed.add_field(name=":musical_note:**Music**", value="`~play`\n`~pause`\n`~skip`\n`~quit`", inline=True)
-            embed.add_field(name=":video_game:**Games**", value="`~tictactoe`\n`~race`\n`~miniLudo`", inline=True)
+            embed.add_field(name=":video_game:**Games**", value="`~tictactoe`\n`~race`\n`~miniLudo`\n`~wordGusser`", inline=True)
             embed.add_field(name=":jigsaw:**Fun**", value="`~roast`\n`~praise`\n`~disturb`", inline=True)
             await ctx.send(embed=embed)
         else:
@@ -28,6 +28,7 @@ class Help(commands.Cog):
                 embed.add_field(name='Tic-Tac-Toe', value='`~tictactoe <@mention>`\n can be played between two players')
                 embed.add_field(name='Car Racing', value='`~race <@mention>`\n can be played between two players')
                 embed.add_field(name='Ludo', value='`~miniLudo <@mention>`\n can be played between two to four players')
+                embed.add_field(name='Hangsman', value='`~wordGusser`\n single player word guessing game.')
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("That section does not exist.")
