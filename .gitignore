@@ -1,0 +1,14 @@
+# Secrets
+.env
+token.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Runtime files
+downloads/
+*.log
+*.db
